@@ -6,31 +6,26 @@ const flattenArray = args => [].concat.apply([], args);
 const concatString = args => time => map( day => day + ' ' + time)(args);
 const elementIsNotTime = element => element == undefined || element == '|' || element == ',' ;
 
-if (!String.prototype.isInList) {
-	String.prototype.isInList = function() {
-		let value = this.valueOf();
-		for (let i = 0, l = arguments.length; i < l; i += 1) {
-			if (arguments[i] === value) return value ;
-		}
-		return false;
-	}
-}
-
 const injectSequansedDays = (element, time) => {
 	const splittedDays = split('-',element);
 	let daysIndexed = [];
+	// get the matching days indexs from the days array
 	map( givenDay => days.map(( day,index ) => givenDay === day && daysIndexed.push(index) ))(splittedDays);
 	
 	let daysRange = [];
 	if(daysIndexed[0] < daysIndexed[1]) {
+		// get the actual days based on the indexs
 		daysRange = days.slice(daysIndexed[0], daysIndexed[1]+1)
 	}
 		
 	if(daysIndexed[0] > daysIndexed[1]) {
-
+		// if we have [day6-day1] EX [Wed-Mon] 
+		// slice wont work as we cant slice reversily so we need to manually push days to the array
+		// we start by getting the days from the beginning of range to friday EX [Wed Thurs Fri]
 		for(let i = daysIndexed[0] ; i < 7 ; i++) {
 			daysRange.push(days[i]);
 		}
+		// then we get the days between monday and the end of range 
 		for(let i = 0 ; i <= daysIndexed[1] ; i++) {
 			daysRange.push(days[i]);
 		}
@@ -68,23 +63,23 @@ const formatTime = args => {
 			const nextElement = splitted[index + 1];
 			const time = elementIsNotTime(nextElement) ? '00:00-24:00' : nextElement;
 
-			// [Day-Day,Day] =>[Day-Day][Day]
+			// [Day-Day,Day] => [Day-Day][Day]
 			if(element.indexOf(',') > -1) {
 				let splittedDays = split(',',element);
-				let sequnsedDays = [];
+				let sequansedDays = [];
 				
 				// [Day1-Day3] ? => [Day1 Time] [Day2 Time] [Day3 Time]
 				if(splittedDays[0].indexOf('-') > -1) {
-					sequnsedDays = injectSequansedDays(splittedDays[0], '00:00-24:00');
+					sequansedDays = injectSequansedDays(splittedDays[0], '00:00-24:00');
 					splittedDays = splittedDays.slice(1);
 				}else { // [Day] => [Day Time]
-					sequnsedDays = [splittedDays[0] + ' ' + '00:00-24:00'];
+					sequansedDays = [splittedDays[0] + ' ' + '00:00-24:00'];
 					splittedDays = splittedDays.slice(1);
 				}
 				// [Day] [Time] => [Day Time]
 				const concattedDaysWithTime = concatString(splittedDays)(time);
 				// add any sequansed days
-				sequnsedDays.length && concattedDaysWithTime.push(sequnsedDays);
+				sequansedDays.length && concattedDaysWithTime.push(sequansedDays);
 				return flattenArray(concattedDaysWithTime);
 			}
 
@@ -94,7 +89,10 @@ const formatTime = args => {
 			}
 
 			//[Day][Time] => [Day Time]
-			if(element.indexOf(',') === -1 && element.indexOf('-') === -1 && element.indexOf('|') === -1) {
+			if(
+				element.indexOf(',') === -1 && 
+				element.indexOf('-') === -1 && 
+				element.indexOf('|') === -1) {
 				return [element + ' ' + time];
 			}
 
@@ -126,7 +124,7 @@ function schedual_filter(list, datetime) {
 		})(time)),
 		flatten,
 		uniq,
-		// cleans up the empty strings returned from un mattched arrays 
+		// cleans up the empty strings returned from unmatched arrays 
 		// this is not best practise 
 		// I should probably find a way to optimize this
 		filter( arg=> arg === '' ? false: true),
