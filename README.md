@@ -5,8 +5,9 @@ this is an Algorithem to check schedualed items ,
 Rules: 
 enquired data should have the following format:
 Days : Sat, Sun, Mon, Tues, Wed, Thurs, Fri
-Time : 05:00-05:20
-EX. `Day 05:00-05:20`
+Time : a range of hours (will only match the exact range ) Ex. [05:00-05:20] Or a specific hour (will only match the hour and ignore the minites) Ex. [13:00]
+
+EXAMPLES :  `Day 05:00-05:20` , `Day 13:00`
 
 to give a range of days : `Day1-Day5 05:00-05:20`
 not specifying a time makes the whole day available
@@ -19,6 +20,11 @@ Please find a sample of how the data can look like in the Json file named `2-dat
 
 Your enquiry should be places in `test-data.json`
 
+### Wishlist : 
+
+1- The app should be developed to compare minutes if a specific houre given
+2- the app should be able to compare given hour for days range Ex. [Day1-Day2 13:00] currently this won't work however [Day1-Day3 13:00-15:00] will work.
+
 ### How To Use It :
 
 To Run the algorithem : 
@@ -26,4 +32,4 @@ To Run the algorithem :
 1- clone the repo 
 2- go to the root of the folder 
 3- run `npm install` to install the node modules 
-4-  run `node ./index.js`
+4-  run `npm run start` or run `node ./index.js` from the root of the project
