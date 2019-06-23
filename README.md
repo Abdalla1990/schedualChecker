@@ -1,6 +1,6 @@
 # Appointment Schedual Checker
 
-This is an Algorithem to check schedualed items , 
+This is an Algorithem to check schedualed items. 
 
 Rules:
 
@@ -25,7 +25,7 @@ Your enquiry should be places in `test-data.json`
 
 1- The app should be developed to compare minutes if a specific houre given
 
-2- the app should be able to compare given hour for days range,  Ex.[Day1-Day2 13:00] currently this won't work, however [Day1-Day3 13:00-15:00] will match the exact time rang and days.
+2- the app should be able to compare given hour for days range,  Ex.`[Day1-Day2 13:00]` currently this won't work, however `[Day1-Day3 13:00-15:00]` will match the exact time rang and days.
 
 ### How To Use It :
 
